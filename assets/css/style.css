@@ -1,0 +1,44 @@
+body {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 16px;
+}
+
+h1 {
+    color: white;
+    font-size: 50px;
+    text-shadow: 2px 2px grey;
+}
+
+.navbar {
+    background-color: lightgrey !important;
+}
+
+.logo-name {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.logo-name .fa-solid {
+    font-size: 40px;
+    background: #d6249f;
+    background: linear-gradient(#fd5949 45%,#d6249f 60%,#285AEB 75%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 10px;
+}
+
+.form-control {
+    border-radius: 5px;
+}
+
+.search-btn {
+    color: white;
+    border: 1px solid white;
+}
+
+.search-btn:hover {
+    color: white;
+    border: 1px solid white;
+    background-color: #285AEB;
+}
