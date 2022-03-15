@@ -7,6 +7,7 @@ let windSpeed = document.querySelector('.wind-speed');
 let uvIndex = document.querySelector('.index-number');
 let userInput = document.querySelector('.user-input');
 let searchButton = document.querySelector('.search-btn');
+let daysContainer = document.querySelectorAll('.container');
 
 // function to grab the lat and lon from the geocoding API
 function getLatLon() {
@@ -193,6 +194,7 @@ console.log(savedCities)
 
 searchButton.addEventListener("click", function(event) {
     event.preventDefault();
+    daysContainer.textContent = "";
     logoTempEl.textContent = "";
     getLatLon();
     getDailyWeather();
