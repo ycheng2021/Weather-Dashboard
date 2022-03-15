@@ -46,7 +46,15 @@ function getDailyWeather() {
         return response.json();
     })
     .then(function (data) {
-        console.log(data)
+        let apiData = data.current
+        console.log(apiData)
+        let humidity = document.createElement('li');
+        let windSpeed = document.createElement('li');
+        let uvIndex = document.createElement('li');
+        humidity.textContent = "Humidity: " + apiData.humidity
+        windSpeed.textContent = "Wind Speed: " + apiData.wind_speed
+        uvIndex.textContent = "UV Index: " + apiData.uvi
+        weatherInfoEl.append(humidity, windSpeed, uvIndex)
     });
 }
 
