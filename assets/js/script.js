@@ -18,8 +18,8 @@ function getLatLon() {
     if (userInputValue === "") {
         userInputValue = "los%20angeles"
     }
+
     locationEl.textContent = "Los Angeles , California"
-    console.log(userInputValue)
     // if user input length is greater than 1, it will add %20 in between
     if (userInputValue.length > 1) {
         userInputValue.split(" ").join("%20")
@@ -27,7 +27,6 @@ function getLatLon() {
         return userInputValue
     } 
 
-    console.log(userInputValue)
     requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + userInputValue + "&appid=0ca6859b636893d65ad340a16c3102a5";
 
     // fetch the lat and lon data based on base url and the city provided
@@ -125,6 +124,52 @@ function getDailyWeather() {
             uvIndex.classList.add('orange')
         } else {
             uvIndex.classList.add('red')
+        }
+
+        // create and append elements for the 5 day forecast
+        for (let i=0; i<5; i++) {
+            let logoTempContainer= document.querySelector('.bottom')
+            let logoTemp = logoTempContainer.children[i]
+            // depending on description give an icon
+            console.log(data.daily[i].weather[0].main)
+            if (data.daily[i].weather[0].main === 'Clouds') {
+                let smallIcon = document.createElement('img')
+                smallIcon.setAttribute("src", "assets/images/weather-icons/cloudy.svg")
+                smallIcon.classList.add("side-icon")
+                logoTemp.append(smallIcon)    
+            } else if (data.daily[i].weather[0].main === 'Clear') {
+                let smallIcon = document.createElement('img')
+                smallIcon.setAttribute("src", "assets/images/weather-icons/clear.svg")
+                smallIcon.classList.add("side-icon")
+                logoTemp.append(smallIcon)   
+            } else if (data.daily[i].weather[0].main === 'Atmosphere') {
+                let  smallIcon = document.createElement('img')
+                smallIcon.setAttribute("src", "assets/images/weather-icons/atmosphere.svg")
+                smallIcon.classList.add("side-icon")
+                logoTemp.append(smallIcon)  
+            } else if (data.daily[i].weather[0].main === 'Snow') {
+                let smallIcon = document.createElement('img')
+                smallIcon.setAttribute("src", "assets/images/weather-icons/snow.svg")
+                smallIcon.classList.add("side-icon")
+                logoTemp.append(smallIcon)  
+            } else if (data.daily[i].weather[0].main === 'Thunderstorm') {
+                let smallIcon = document.createElement('img')
+                smallIcon.setAttribute("src", "assets/images/weather-icons/thunderstorms.svg")
+                smallIcon.classList.add("side-icon")
+                logoTemp.append(smallIcon)  
+            } else if (data.daily[i].weather[0].main === 'Drizzle') {
+                let smallIcon = document.createElement('img')
+                smallIcon.setAttribute("src", "assets/images/weather-icons/drizzle.svg")
+                smallIcon.classList.add("side-icon")
+                logoTemp.append(smallIcon) 
+            } else if (data.daily[i].weather[0].main === 'Rain') {
+                let smallIcon = document.createElement('img')
+                smallIcon.setAttribute("src", "assets/images/weather-icons/rain.svg")
+                smallIcon.classList.add("side-icon")
+                logoTemp.append(smallIcon)  
+            } else {
+                return 
+            }
         }
     });
 }

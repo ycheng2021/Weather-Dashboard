@@ -65,6 +65,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+    text-shadow: 2px 2px grey;
 }
 
 .weather-container {
@@ -89,7 +90,7 @@ h1 {
 
 .main-icon {
     height: 100%;
-    width: 100px;
+    width: 150px;
 }
 
 .bottom {
@@ -100,12 +101,21 @@ h1 {
     left: 10px;
 }
 
-.box {
+.side-icon {
+    width: 50px;
+}
+
+.flex {
+    display: flex;
+}
+
+.container {
     width: 130px;
     height: 150px;
-    background-color: white;
+    background-color: lightslategrey;
     border-radius: 5px;
     margin: 0 13px;
+    box-shadow: 2px 2px 2px black;
 }
 
 .red {
