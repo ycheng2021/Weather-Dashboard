@@ -1,6 +1,5 @@
 let weatherContainer = document.querySelector('.weather-container')
 let locationEl = document.querySelector('.location-time');
-let timeEl = document.querySelector('.time');
 let logoTempEl = document.querySelector('.logo-temp');
 let weatherInfoEl = document.querySelector('.weather-info');
 let humidity = document.querySelector('.humidity');
@@ -15,7 +14,8 @@ function getLatLon() {
     userInputValue = document.querySelector('.user-input').value
     userInputValue = userInputValue.toLowerCase();
     // if there is no input just use los angeles
-    if (!userInput) {
+    userInput = document.querySelector('.user-input');
+    if (userInputValue === "") {
         userInputValue = "los%20angeles"
     }
     locationEl.textContent = "Los Angeles , California"
@@ -63,7 +63,52 @@ function getDailyWeather() {
     })
     .then(function (data) {
         let apiData = data.current
-        console.log(apiData)
+        console.log(data)
+        // depending on description give an icon
+        if (apiData.weather[0].main === 'Clouds') {
+            let weatherIcon = document.createElement('img')
+            weatherIcon.setAttribute("src", "assets/images/weather-icons/cloudy.svg")
+            weatherIcon.classList.add("main-icon")
+            logoTempEl.append(weatherIcon)    
+        } else if (apiData.weather[0].main === 'Clear') {
+            let weatherIcon = document.createElement('img')
+            weatherIcon.setAttribute("src", "assets/images/weather-icons/clear.svg")
+            weatherIcon.classList.add("main-icon")
+            logoTempEl.append(weatherIcon)   
+        } else if (apiData.weather[0].main === 'Atmosphere') {
+            let weatherIcon = document.createElement('img')
+            weatherIcon.setAttribute("src", "assets/images/weather-icons/atmosphere.svg")
+            weatherIcon.classList.add("main-icon")
+            logoTempEl.append(weatherIcon)  
+        } else if (apiData.weather[0].main === 'Snow') {
+            let weatherIcon = document.createElement('img')
+            weatherIcon.setAttribute("src", "assets/images/weather-icons/snow.svg")
+            weatherIcon.classList.add("main-icon")
+            logoTempEl.append(weatherIcon)  
+        } else if (apiData.weather[0].main === 'Thunderstorm') {
+            let weatherIcon = document.createElement('img')
+            weatherIcon.setAttribute("src", "assets/images/weather-icons/thunderstorms.svg")
+            weatherIcon.classList.add("main-icon")
+            logoTempEl.append(weatherIcon)  
+        } else if (apiData.weather[0].main === 'Drizzle') {
+            let weatherIcon = document.createElement('img')
+            weatherIcon.setAttribute("src", "assets/images/weather-icons/drizzle.svg")
+            weatherIcon.classList.add("main-icon")
+            logoTempEl.append(weatherIcon) 
+        } else if (apiData.weather[0].main === 'Rain') {
+            let weatherIcon = document.createElement('img')
+            weatherIcon.setAttribute("src", "assets/images/weather-icons/rain.svg")
+            weatherIcon.classList.add("main-icon")
+            logoTempEl.append(weatherIcon)  
+        } else {
+            return 
+        }
+        const currentTime = apiData.dt - data.timezone_offset
+        let currentDate = new Date(currentTime * 1000);
+        console.log(currentDate)
+        let date = document.createElement('p');
+        date.textContent = currentDate;
+        locationEl.append(date);
         let temp = convertToFah(apiData.temp)
         let temperature = document.createElement('h1');
         temperature.textContent = Math.floor(temp) + "℉";
@@ -87,9 +132,24 @@ function getDailyWeather() {
 getLatLon();
 getDailyWeather();
 
+// empty array to store city names
+let savedCities = [];
+
+// when user inputs city and search, save these data into local storage
+function saveSearch() {
+    userInput = document.querySelector('.user-input');
+    // if user input save into local
+    if (userInput) {
+        userInputValue = userInput.value
+    }
+}
+console.log(savedCities)
+// create buttons to retrieve
+
 searchButton.addEventListener("click", function(event) {
     event.preventDefault();
     logoTempEl.textContent = "";
     getLatLon();
     getDailyWeather();
+    saveSearch();
 })

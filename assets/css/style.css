@@ -52,7 +52,8 @@ h1 {
 }
 
 .location-time {
-    margin: 10px;
+    margin-top: 20px;
+    font-size: 24px;
 }
 .weather-info {
     list-style-type: none;
@@ -68,10 +69,11 @@ h1 {
 
 .weather-container {
     width: 800px;
-    height: 700px;
+    height: 550px;
     background-color: lightblue;
     box-shadow: 5px 5px 5px black;
     border-radius: 5px;
+    position: relative;
 }
 
 .top {
@@ -79,9 +81,23 @@ h1 {
     font-size: 20px;
 }
 
+.logo-temp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-icon {
+    height: 100%;
+    width: 100px;
+}
+
 .bottom {
     display: flex;
     justify-content: center;
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
 }
 
 .box {
@@ -89,7 +105,7 @@ h1 {
     height: 150px;
     background-color: white;
     border-radius: 5px;
-    margin: 0 10px;
+    margin: 0 13px;
 }
 
 .red {
