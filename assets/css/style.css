@@ -1,6 +1,7 @@
 body {
     font-family: 'Fredoka', sans-serif;
     font-size: 16px;
+    text-align: center;
 }
 
 h1 {
@@ -41,4 +42,9 @@ h1 {
     color: white;
     border: 1px solid white;
     background-color: #285AEB;
+}
+
+.location,
+.time {
+    margin: 10px;
 }

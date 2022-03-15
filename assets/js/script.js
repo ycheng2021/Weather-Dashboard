@@ -1,5 +1,6 @@
 let dailyWeatherEl = document.querySelector('.daily-weather')
-let locationTimeEl = document.querySelector('.location-time');
+let locationEl = document.querySelector('.location');
+let timeEl = document.querySelector('.time');
 let logoTempEl = document.querySelector('.logo-temp');
 let weatherInfoEl = document.querySelector('.weather-info');
 let userInput = document.querySelector('.user-input')
@@ -26,16 +27,19 @@ function getLatLon() {
     })
     .then(function (data) {
         console.log(data)
-        let cityLat = data[0].lat;
-        let cityLon = data[0].lon;
-        let latLon = "lat=" + cityLat + "&lon=" + cityLon;
-        return latLon;
+        let lat = data[0].lat;
+        let lon = data[0].lon;
+        let latLon = "lat=" + lat + "&lon=" + lon;
+        let cityState = data[0].name + " , " + data[0].state
+        locationEl.textContent = cityState;
+        localStorage.setItem("latLon", latLon);
     });
 }
 
 // gets the daily weather information once lat and lon is fetched
 function getDailyWeather() {
-    geoRequestUrl = "https://api.openweathermap.org/data/2.5/onecall?" + getLatLon + "&appid=0ca6859b636893d65ad340a16c3102a5";
+    let latLon = localStorage.getItem("latLon")
+    geoRequestUrl = "https://api.openweathermap.org/data/2.5/onecall?" + latLon + "&appid=0ca6859b636893d65ad340a16c3102a5";
     
     fetch(geoRequestUrl)
     .then(function (response) {
@@ -49,5 +53,5 @@ function getDailyWeather() {
 searchButton.addEventListener("click", function(event) {
     event.preventDefault();
     getLatLon();
-    // getDailyWeather();
+    getDailyWeather();
 })
