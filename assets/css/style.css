@@ -131,8 +131,14 @@ h5 {
 .five-wind {
     font-size: 12px;
     margin: 0;
+    padding: 0;
     color: white;
     text-shadow: 2px 2px grey;
+}
+
+.five-humidity {
+    position: relative;
+    margin-left: 10px;
 }
 
 .container {
