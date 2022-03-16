@@ -8,6 +8,7 @@ let uvIndex = document.querySelector('.index-number');
 let userInput = document.querySelector('.user-input');
 let searchButton = document.querySelector('.search-btn');
 let daysContainer = document.querySelectorAll('.container');
+let flexContainer = document.querySelectorAll('.flex');
 
 // function to grab the lat and lon from the geocoding API
 function getLatLon() {
@@ -105,16 +106,17 @@ function getDailyWeather() {
         }
         const currentTime = apiData.dt - data.timezone_offset
         let currentDate = new Date(currentTime * 1000);
-        console.log(currentDate)
+        let dateOnly = currentDate.toDateString();
+        console.log(dateOnly)
         let date = document.createElement('p');
-        date.textContent = currentDate;
+        date.textContent = dateOnly;
         locationEl.append(date);
         let temp = convertToFah(apiData.temp)
         let temperature = document.createElement('h1');
         temperature.textContent = Math.floor(temp) + "℉";
         logoTempEl.append(temperature)
-        humidity.textContent = apiData.humidity
-        windSpeed.textContent = apiData.wind_speed
+        humidity.textContent = apiData.humidity + " %"
+        windSpeed.textContent = apiData.wind_speed + " mph"
         uvIndex.textContent = apiData.uvi
         // depending on uv index number to decide what color it is
         if (apiData.uvi < 3) {
@@ -131,8 +133,12 @@ function getDailyWeather() {
         for (let i=0; i<5; i++) {
             let logoTempContainer= document.querySelector('.bottom')
             let logoTemp = logoTempContainer.children[i]
+            let fiveDays = document.createElement('h5')
+            fiveDays.textContent = "TEST";
+            fiveDays.classList.add("five-day");
+            logoTemp.append(fiveDays)
             // depending on description give an icon
-            console.log(data.daily[i].weather[0].main)
+            // console.log(data.daily[i].weather[0].main)
             if (data.daily[i].weather[0].main === 'Clouds') {
                 let smallIcon = document.createElement('img')
                 smallIcon.setAttribute("src", "assets/images/weather-icons/cloudy.svg")
@@ -171,6 +177,17 @@ function getDailyWeather() {
             } else {
                 return 
             }
+            let fiveDayTemp = document.createElement('h5');
+            let dayTemp = data.daily[i].temp.day
+            fiveDayTemp.textContent = Math.floor(convertToFah(dayTemp)) + "℉";
+            fiveDayTemp.classList.add("five-temp");
+            let fiveDayHumidity = document.createElement('p');
+            fiveDayHumidity.textContent = "Humidity:" + data.daily[i].humidity + "%";
+            fiveDayHumidity.classList.add("five-humidity")
+            let fiveDayWind = document.createElement('p');
+            fiveDayWind.textContent = "Wind Speed:" + data.daily[i].wind_speed + "mph"
+            fiveDayWind.classList.add("five-wind")
+            logoTemp.append(fiveDayTemp, fiveDayHumidity, fiveDayWind)
         }
     });
 }
