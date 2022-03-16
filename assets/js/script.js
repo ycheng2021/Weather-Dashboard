@@ -8,10 +8,16 @@ let uvIndex = document.querySelector('.index-number');
 let userInput = document.querySelector('.user-input');
 let searchButton = document.querySelector('.search-btn');
 let daysContainer = document.querySelectorAll('.container');
-let flexContainer = document.querySelectorAll('.flex');
+let rightContainer = document.querySelector('.right');
+
+// converts kelvin to fahrenheit
+function convertToFah(kelvin) {
+    let convertedTemp = 1.8 * (kelvin - 273) + 32;
+    return convertedTemp;
+}
 
 // function to grab the lat and lon from the geocoding API
-function getLatLon() {
+function getWeather() {
     // grabs the value of the user inputs
     userInputValue = document.querySelector('.user-input').value
     userInputValue = userInputValue.toLowerCase();
@@ -30,41 +36,28 @@ function getLatLon() {
     } 
 
     requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + userInputValue + "&appid=0ca6859b636893d65ad340a16c3102a5";
-
+    
     // fetch the lat and lon data based on base url and the city provided
     fetch(requestUrl)
-    .then(function (response) {
-        return response.json();
+    .then(function(response) { 
+    return response.json()
     })
-    .then(function (data) {
+    .then(function(data) {   
+    let lat = data[0].lat;
+    let lon = data[0].lon;
+    let latLon = "lat=" + lat + "&lon=" + lon;
+    let cityState = data[0].name + " , " + data[0].state
+    locationEl.textContent = cityState;
+    console.log(latLon)
+    let anotherUrl = "https://api.openweathermap.org/data/2.5/onecall?" + latLon + "&appid=0ca6859b636893d65ad340a16c3102a5"
+    return fetch(anotherUrl)
+    })
+    .then(function(response) { 
+    return response.json(); 
+    })
+    .then(function(data) {
         console.log(data)
-        let lat = data[0].lat;
-        let lon = data[0].lon;
-        let latLon = "lat=" + lat + "&lon=" + lon;
-        let cityState = data[0].name + " , " + data[0].state
-        locationEl.textContent = cityState;
-        localStorage.setItem("latLon", latLon);
-    });
-}
-
-// converts kelvin to fahrenheit
-function convertToFah(kelvin) {
-    let convertedTemp = 1.8 * (kelvin - 273) + 32;
-    return convertedTemp;
-}
-
-// gets the daily weather information once lat and lon is fetched
-function getDailyWeather() {
-    let latLon = localStorage.getItem("latLon")
-    geoRequestUrl = "https://api.openweathermap.org/data/2.5/onecall?" + latLon + "&appid=0ca6859b636893d65ad340a16c3102a5";
-    
-    fetch(geoRequestUrl)
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
         let apiData = data.current
-        console.log(data)
         // depending on description give an icon
         if (apiData.weather[0].main === 'Clouds') {
             let weatherIcon = document.createElement('img')
@@ -189,31 +182,14 @@ function getDailyWeather() {
             fiveDayWind.classList.add("five-wind")
             logoTemp.append(fiveDayTemp, fiveDayHumidity, fiveDayWind)
         }
-    });
+    })
 }
 
-getLatLon();
-getDailyWeather();
-
-// empty array to store city names
-let savedCities = [];
-
-// when user inputs city and search, save these data into local storage
-function saveSearch() {
-    userInput = document.querySelector('.user-input');
-    // if user input save into local
-    if (userInput) {
-        userInputValue = userInput.value
-    }
-}
-console.log(savedCities)
-// create buttons to retrieve
+getWeather();
 
 searchButton.addEventListener("click", function(event) {
     event.preventDefault();
-    daysContainer.textContent = "";
+    daysContainer.textContent ="";
     logoTempEl.textContent = "";
-    getLatLon();
-    getDailyWeather();
-    saveSearch();
+    getWeather();
 })
