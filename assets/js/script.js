@@ -9,12 +9,16 @@ let userInput = document.querySelector('.user-input');
 let searchButton = document.querySelector('.search-btn');
 let daysContainer = document.querySelectorAll('.container');
 let rightContainer = document.querySelector('.right');
+let savedButtons = document.querySelector('.saved-button');
 
 // converts kelvin to fahrenheit
 function convertToFah(kelvin) {
     let convertedTemp = 1.8 * (kelvin - 273) + 32;
     return convertedTemp;
 }
+
+let savedGeoData = [];
+let savedCityData = [];
 
 // function to grab the lat and lon from the geocoding API
 function getWeather() {
@@ -48,6 +52,8 @@ function getWeather() {
     let latLon = "lat=" + lat + "&lon=" + lon;
     let cityState = data[0].name + " , " + data[0].state
     locationEl.textContent = cityState;
+    savedGeoData.push(latLon)
+    savedCityData.push(data[0].name)
     console.log(latLon)
     let anotherUrl = "https://api.openweathermap.org/data/2.5/onecall?" + latLon + "&appid=0ca6859b636893d65ad340a16c3102a5"
     return fetch(anotherUrl)
@@ -100,7 +106,7 @@ function getWeather() {
         const currentTime = apiData.dt - data.timezone_offset
         let currentDate = new Date(currentTime * 1000);
         let dateOnly = currentDate.toDateString();
-        console.log(dateOnly)
+        // console.log(dateOnly)
         let date = document.createElement('p');
         date.textContent = dateOnly;
         locationEl.append(date);
@@ -194,10 +200,34 @@ function getWeather() {
 
 getWeather();
 
+function saveData() {
+    localStorage.setItem("latLon", JSON.stringify(savedGeoData))
+    localStorage.setItem("cityNames", JSON.stringify(savedCityData))
+}
+
+function saveButtons() {
+    let retrievedGeoData = JSON.parse(localStorage.getItem("latLon"))
+    let retrievedCityData = JSON.parse(localStorage.getItem("cityNames"))
+    console.log(retrievedGeoData)
+    console.log(retrievedCityData)
+    for (let i=0; i<retrievedGeoData.length; i++) {
+        let cityButton = document.createElement('button')
+        cityButton.textContent = retrievedCityData[i]
+        cityButton.classList.add("search-button")
+        savedButtons.append(cityButton)
+        userInputValue = retrievedCityData[i]
+        cityButton.addEventListener("click", function() {
+            getWeather();
+        })
+    }
+}
+
 searchButton.addEventListener("click", function(event) {
     event.preventDefault();
     let removeContent = document.querySelector(".bottom")
     removeContent.textContent = "";
     logoTempEl.textContent = "";
     getWeather();
+    saveData();
+    saveButtons();
 })
