@@ -5,6 +5,7 @@ html,body {
     font-size: 16px;
     text-align: center;
     background-color: grey;
+    text-shadow: 2px 2px grey;
 }
 
 h3 {
@@ -43,6 +44,7 @@ h5 {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     padding: 10px;
+    text-shadow: none;
 }
 
 .form-control {
@@ -78,7 +80,7 @@ h5 {
 .weather-container {
     width: 800px;
     height: 550px;
-    background-color: lightblue;
+    background: linear-gradient(rgb(112, 173, 194), lightblue);
     box-shadow: 5px 5px 5px black;
     border-radius: 5px;
     position: relative;
@@ -88,6 +90,13 @@ h5 {
 .top {
     color: white;
     font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.right {
+    margin-left: 30px;
+    margin-top: 10px;
 }
 
 .logo-temp {
