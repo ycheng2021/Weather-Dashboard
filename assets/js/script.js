@@ -122,14 +122,21 @@ function getWeather() {
             uvIndex.classList.add('red')
         }
 
+        // create the list title
+        
+
+
         // create and append elements for the 5 day forecast
         for (let i=0; i<5; i++) {
-            let logoTempContainer= document.querySelector('.bottom')
-            let logoTemp = logoTempContainer.children[i]
+            let bottomContainer= document.querySelector('.bottom')
+            let boxContainer = document.createElement('div')
+            bottomContainer.append(boxContainer);
+            let logoTemp = bottomContainer.children[i]
             let fiveDays = document.createElement('h5')
+            boxContainer.classList.add("container");
             fiveDays.textContent = "TEST";
             fiveDays.classList.add("five-day");
-            logoTemp.append(fiveDays)
+            logoTemp.append(fiveDays);
             // depending on description give an icon
             // console.log(data.daily[i].weather[0].main)
             if (data.daily[i].weather[0].main === 'Clouds') {
@@ -189,7 +196,8 @@ getWeather();
 
 searchButton.addEventListener("click", function(event) {
     event.preventDefault();
-    daysContainer.textContent ="";
+    let removeContent = document.querySelector(".bottom")
+    removeContent.textContent = "";
     logoTempEl.textContent = "";
     getWeather();
 })
