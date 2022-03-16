@@ -26,7 +26,7 @@ function getWeather() {
     userInputValue = document.querySelector('.user-input').value
     userInputValue = userInputValue.toLowerCase();
     // if there is no input just use los angeles
-    userInput = document.querySelector('.user-input');
+
     if (userInputValue === "") {
         userInputValue = "los%20angeles"
     }
@@ -80,7 +80,7 @@ function getWeather() {
             weatherIcon.setAttribute("src", "assets/images/weather-icons/clear.svg")
             weatherIcon.classList.add("main-icon")
             logoTempEl.append(weatherIcon)   
-        } else if (apiData.weather[0].main === 'Atmosphere') {
+        } else if (apiData.weather[0].main === 'Mist' || 'Smoke' || 'Haze' || 'Dust' || 'Fog' || 'Sand' || 'Dust' || 'Ash' || 'Squall' || 'Tornado') {
             let weatherIcon = document.createElement('img')
             weatherIcon.setAttribute("src", "assets/images/weather-icons/atmosphere.svg")
             weatherIcon.classList.add("main-icon")
@@ -206,6 +206,7 @@ function saveData() {
     localStorage.setItem("cityNames", JSON.stringify(savedCityData))
 }
 
+// buttons have be less than 9 to fit within space
 function saveButtons(event) {
     let retrievedGeoData = JSON.parse(localStorage.getItem("latLon"))
     let retrievedCityData = JSON.parse(localStorage.getItem("cityNames"))
