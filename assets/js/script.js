@@ -109,9 +109,11 @@ function getWeather() {
             return 
         }
         const currentTime = apiData.dt - data.timezone_offset
+        console.log(currentTime)
         let currentDate = new Date(currentTime * 1000);
-        let dateOnly = currentDate.toDateString();
-        // console.log(dateOnly)
+        console.log(data.timezone)
+        let dateOnly = moment.tz(currentDate, data.timezone).format('MMMM Do YYYY, h:mm:ss a')
+        console.log(dateOnly)
         let date = document.createElement('p');
         date.textContent = dateOnly;
         locationEl.append(date);
@@ -134,49 +136,59 @@ function getWeather() {
         }
 
         // create and append elements for the 5 day forecast
+        
         for (let i=0; i<5; i++) {
             let bottomContainer= document.querySelector('.bottom')
             let boxContainer = document.createElement('div')
             bottomContainer.append(boxContainer);
-            let logoTemp = bottomContainer.children[i]
-            let fiveDays = document.createElement('h5')
             boxContainer.classList.add("container");
-            fiveDays.textContent = "TEST";
+            let logoTemp = bottomContainer.children[i]
+            logoTemp.classList.add("box-container"+ (i+1));
+        }
+
+
+        for (let j=1; j<6; j++) {
+            let logoTemp = document.querySelector('.box-container' + j)
+            let fiveDays = document.createElement('h5')
+            let fiveDayDate = data.daily[j].dt - data.timezone_offset
+            let fiveTime = new Date(fiveDayDate * 1000)
+            let fiveDateOnly = moment.tz(fiveTime, data.timezone).format('M' + '/' + 'D')
+            fiveDays.textContent = fiveDateOnly
             fiveDays.classList.add("five-day");
             logoTemp.append(fiveDays);
             // depending on description give an icon
             // console.log(data.daily[i].weather[0].main)
-            if (data.daily[i].weather[0].main === 'Clouds') {
+            if (data.daily[j].weather[0].main === 'Clouds') {
                 let smallIcon = document.createElement('img')
                 smallIcon.setAttribute("src", "assets/images/weather-icons/cloudy.svg")
                 smallIcon.classList.add("side-icon")
                 logoTemp.append(smallIcon)    
-            } else if (data.daily[i].weather[0].main === 'Clear') {
+            } else if (data.daily[j].weather[0].main === 'Clear') {
                 let smallIcon = document.createElement('img')
                 smallIcon.setAttribute("src", "assets/images/weather-icons/clear.svg")
                 smallIcon.classList.add("side-icon")
                 logoTemp.append(smallIcon)   
-            } else if (data.daily[i].weather[0].main === 'Atmosphere') {
+            } else if (data.daily[j].weather[0].main === 'Atmosphere') {
                 let  smallIcon = document.createElement('img')
                 smallIcon.setAttribute("src", "assets/images/weather-icons/atmosphere.svg")
                 smallIcon.classList.add("side-icon")
                 logoTemp.append(smallIcon)  
-            } else if (data.daily[i].weather[0].main === 'Snow') {
+            } else if (data.daily[j].weather[0].main === 'Snow') {
                 let smallIcon = document.createElement('img')
                 smallIcon.setAttribute("src", "assets/images/weather-icons/snow.svg")
                 smallIcon.classList.add("side-icon")
                 logoTemp.append(smallIcon)  
-            } else if (data.daily[i].weather[0].main === 'Thunderstorm') {
+            } else if (data.daily[j].weather[0].main === 'Thunderstorm') {
                 let smallIcon = document.createElement('img')
                 smallIcon.setAttribute("src", "assets/images/weather-icons/thunderstorms.svg")
                 smallIcon.classList.add("side-icon")
                 logoTemp.append(smallIcon)  
-            } else if (data.daily[i].weather[0].main === 'Drizzle') {
+            } else if (data.daily[j].weather[0].main === 'Drizzle') {
                 let smallIcon = document.createElement('img')
                 smallIcon.setAttribute("src", "assets/images/weather-icons/drizzle.svg")
                 smallIcon.classList.add("side-icon")
                 logoTemp.append(smallIcon) 
-            } else if (data.daily[i].weather[0].main === 'Rain') {
+            } else if (data.daily[j].weather[0].main === 'Rain') {
                 let smallIcon = document.createElement('img')
                 smallIcon.setAttribute("src", "assets/images/weather-icons/rain.svg")
                 smallIcon.classList.add("side-icon")
@@ -185,14 +197,14 @@ function getWeather() {
                 return 
             }
             let fiveDayTemp = document.createElement('h5');
-            let dayTemp = data.daily[i].temp.day
+            let dayTemp = data.daily[j].temp.day
             fiveDayTemp.textContent = Math.floor(convertToFah(dayTemp)) + "℉";
             fiveDayTemp.classList.add("five-temp");
             let fiveDayHumidity = document.createElement('p');
-            fiveDayHumidity.textContent = "Humidity:" + data.daily[i].humidity + "%";
+            fiveDayHumidity.textContent = "Humidity:" + data.daily[j].humidity + "%";
             fiveDayHumidity.classList.add("five-humidity")
             let fiveDayWind = document.createElement('p');
-            fiveDayWind.textContent = "Wind Speed:" + data.daily[i].wind_speed + "mph"
+            fiveDayWind.textContent = "Wind Speed:" + data.daily[j].wind_speed + "mph"
             fiveDayWind.classList.add("five-wind")
             logoTemp.append(fiveDayTemp, fiveDayHumidity, fiveDayWind)
         }
