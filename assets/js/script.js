@@ -54,6 +54,11 @@ function getWeather() {
     locationEl.textContent = cityState;
     savedGeoData.push(latLon)
     savedCityData.push(data[0].name)
+    let cityButton = document.createElement('button')
+    cityButton.textContent = data[0].name
+    cityButton.classList.add("search-button")
+    cityButton.setAttribute("data-city", data[0].name)
+    savedButtons.append(cityButton)
     console.log(latLon)
     let anotherUrl = "https://api.openweathermap.org/data/2.5/onecall?" + latLon + "&appid=0ca6859b636893d65ad340a16c3102a5"
     return fetch(anotherUrl)
@@ -128,10 +133,6 @@ function getWeather() {
             uvIndex.classList.add('red')
         }
 
-        // create the list title
-        
-
-
         // create and append elements for the 5 day forecast
         for (let i=0; i<5; i++) {
             let bottomContainer= document.querySelector('.bottom')
@@ -205,21 +206,9 @@ function saveData() {
     localStorage.setItem("cityNames", JSON.stringify(savedCityData))
 }
 
-function saveButtons() {
+function saveButtons(event) {
     let retrievedGeoData = JSON.parse(localStorage.getItem("latLon"))
     let retrievedCityData = JSON.parse(localStorage.getItem("cityNames"))
-    console.log(retrievedGeoData)
-    console.log(retrievedCityData)
-    for (let i=0; i<retrievedGeoData.length; i++) {
-        let cityButton = document.createElement('button')
-        cityButton.textContent = retrievedCityData[i]
-        cityButton.classList.add("search-button")
-        savedButtons.append(cityButton)
-        userInputValue = retrievedCityData[i]
-        cityButton.addEventListener("click", function() {
-            getWeather();
-        })
-    }
 }
 
 searchButton.addEventListener("click", function(event) {
@@ -228,6 +217,6 @@ searchButton.addEventListener("click", function(event) {
     removeContent.textContent = "";
     logoTempEl.textContent = "";
     getWeather();
-    saveData();
+    saveData()
     saveButtons();
 })
