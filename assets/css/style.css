@@ -153,6 +153,11 @@ h5 {
     margin-left: 10px;
 }
 
+.saved-button {
+    display: flex;
+    flex-direction: column;
+}
+
 .container {
     width: 130px;
     height: 150px;
