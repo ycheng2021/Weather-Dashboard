@@ -152,4 +152,5 @@ searchButton.addEventListener("click", function(event) {
     getLatLon();
     getDailyWeather();
     saveSearch();
+
 })
