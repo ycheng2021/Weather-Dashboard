@@ -23,13 +23,17 @@ let cityNames = [];
 
 // function to grab the lat and lon, then use lat and lon and generate
 // the weather information needed to create and append elements
-function getWeather() {
+function getWeather(test) {
     // grabs the value of the user inputs
     userInputValue = document.querySelector('.user-input').value
     // turn user input as all lowercase to reduce errors 
     userInputValue = userInputValue.toLowerCase();
     
     if (userInputValue) saveData(userInputValue);
+
+    if (test) {
+        userInputValue = test;
+    }
 
     // if there is no input just use los angeles
     if (userInputValue === "") {
@@ -170,7 +174,7 @@ function getWeather() {
                 smallIcon.setAttribute("src", "assets/images/weather-icons/clear.svg")
                 smallIcon.classList.add("side-icon")
                 logoTemp.append(smallIcon)   
-            } else if (data.daily[j].weather[0].main === 'Atmosphere') {
+            } else if (data.daily[j].weather[0].main === 'Mist' || 'Smoke' || 'Haze' || 'Dust' || 'Fog' || 'Sand' || 'Dust' || 'Ash' || 'Squall' || 'Tornado') {
                 let  smallIcon = document.createElement('img')
                 smallIcon.setAttribute("src", "assets/images/weather-icons/atmosphere.svg")
                 smallIcon.classList.add("side-icon")
@@ -250,14 +254,30 @@ function createButtons() {
             // change text to the city names for the button
             cityButton.textContent = cityNames[i]
             cityButton.setAttribute("data-city", cityNames[i])
-            // applies the css to these buttons by using class
             cityButton.classList.add("saved-btn")
-            rightContainer.append(cityButton)
+            // applies the css to these buttons by using class
+            savedButtons.append(cityButton)
         }
     }
 }
 
 createButtons();
+
+// event listener for the buttons
+savedButtons.addEventListener("click", function(event) {
+    let element = event.target;
+    // check if element is a button
+    if (element.matches("button") ===  true) {
+        let currentCity = element.getAttribute("data-city")
+        //clears out the already appended elements 
+        let removeContent = document.querySelector(".bottom")
+        removeContent.textContent = "";
+        logoTempEl.textContent = "";
+        // set city and perform search
+        getWeather(currentCity)
+    }
+})
+
 
 // click the search button and the following functions will run
 searchButton.addEventListener("click", function(event) {

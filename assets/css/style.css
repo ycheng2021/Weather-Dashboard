@@ -77,6 +77,11 @@ h5 {
     align-items: center;
 }
 
+.saved-button {
+    display: flex;
+    flex-direction: column;
+}
+
 .weather-container {
     width: 800px;
     height: 550px;
