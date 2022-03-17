@@ -1,0 +1,231 @@
+html,body {
+    height: 100%;
+    width: 100%;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 16px;
+    text-align: center;
+    background-color: grey;
+    text-shadow: 2px 2px grey;
+}
+
+h3 {
+    color: white;
+    font-size: 50px;
+    text-shadow: 2px 2px grey;
+}
+
+h1 {
+    color: white;
+    font-size: 100px;
+    text-shadow: 2px 2px grey;
+}
+
+h5 {
+    color: white;
+    font-size: 25px;
+    text-shadow: 2px 2px grey;
+}
+
+.navbar {
+    background-color: lightgrey !important;
+    margin-bottom: 0 !important;
+}
+
+.logo-name {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.logo-name .fa-solid {
+    font-size: 40px;
+    background: #d6249f;
+    background: linear-gradient(#fd5949 45%,#d6249f 60%,#285AEB 75%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 10px;
+    text-shadow: none;
+}
+
+.form-control {
+    border-radius: 5px;
+}
+
+.search-btn {
+    color: white;
+    border: 1px solid white;
+}
+
+.search-btn:hover {
+    color: white;
+    border: 1px solid white;
+    background-color: lightblue;
+}
+
+.location-time {
+    font-size: 24px;
+    padding-top: 10px;
+}
+
+.weather-info {
+    list-style-type: none;
+}
+
+.center {
+    height: 90%;
+    display: flex;
+    align-items: center;
+}
+
+.weather-container {
+    width: 800px;
+    height: 550px;
+    background: linear-gradient(rgb(112, 173, 194), lightblue);
+    box-shadow: 5px 5px 5px black;
+    border-radius: 5px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.top {
+    color: white;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.left {
+    margin: 0 auto;
+}
+
+.right {
+    margin: 10px 30px auto;
+}
+
+.logo-temp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-icon {
+    height: 100%;
+    width: 150px;
+}
+
+.bottom {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+}
+
+.side-icon {
+    width: 40px;
+    position: relative;
+    float: left;
+}
+
+.five-temp {
+    font-size: 16px;
+    position: relative;
+    float: right;
+    margin-top: 13px;
+}
+
+.five-day {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.five-humidity,
+.five-wind {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    color: white;
+    text-shadow: 2px 2px grey;
+}
+
+.five-humidity {
+    position: relative;
+    margin-left: 10px;
+}
+
+.saved-btn {
+    width: 150px;
+    height: 40px;
+    background-color: rgb(156, 192, 209);
+    border: 1px solid black;
+    border-radius: 3px;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.container {
+    width: 130px;
+    height: 150px;
+    background-color: lightslategrey;
+    border-radius: 5px;
+    margin: 0 13px;
+    box-shadow: 2px 2px 2px black;
+}
+
+.red {
+    background-color: red;
+    padding: 2px 15px;
+    border-radius: 5px;
+}
+
+.orange {
+    background-color: orange;
+    padding: 2px 15px;
+    border-radius: 5px;
+}
+
+.yellow {
+    background-color: yellow;
+    padding: 2px 15px;
+    border-radius: 5px;
+}
+
+.green {
+    background-color: green;
+    padding: 2px 15px;
+    border-radius: 5px;
+}
+
+@media screen and (max-width:800px) {
+    .bottom {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .weather-container {
+        min-height: 700px;
+    }
+    .container {
+        margin: 10px !important;
+    }
+}
+
+@media screen and (max-width:460px) {
+    body {
+        min-width: 460px;
+    }
+    .center {
+        margin-top: 65px;;
+    }
+    .bottom {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .weather-container {
+        min-height: 700px;
+    }
+    .container {
+        margin: 10px !important;
+    }
+}
