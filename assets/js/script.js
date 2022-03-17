@@ -1,3 +1,4 @@
+// query selector for the elements
 let weatherContainer = document.querySelector('.weather-container')
 let locationEl = document.querySelector('.location-time');
 let logoTempEl = document.querySelector('.logo-temp');
@@ -11,22 +12,24 @@ let daysContainer = document.querySelectorAll('.container');
 let rightContainer = document.querySelector('.right');
 let savedButtons = document.querySelector('.saved-button');
 
-// converts kelvin to fahrenheit
+// function that converts kelvin to fahrenheit
 function convertToFah(kelvin) {
     let convertedTemp = 1.8 * (kelvin - 273) + 32;
     return convertedTemp;
 }
 
-let savedGeoData = [];
-let savedCityData = [];
+// empty array to push the city names into
+const cityNames = [];
 
-// function to grab the lat and lon from the geocoding API
+// function to grab the lat and lon, then use lat and lon and generate
+// the weather information needed to create and append elements
 function getWeather() {
     // grabs the value of the user inputs
     userInputValue = document.querySelector('.user-input').value
+    // turn user input as all lowercase to reduce errors 
     userInputValue = userInputValue.toLowerCase();
+    
     // if there is no input just use los angeles
-
     if (userInputValue === "") {
         userInputValue = "los%20angeles"
     }
@@ -41,7 +44,7 @@ function getWeather() {
 
     requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + userInputValue + "&appid=0ca6859b636893d65ad340a16c3102a5";
     
-    // fetch the lat and lon data based on base url and the city provided
+    // fetch the lat and lon data based on the city provided
     fetch(requestUrl)
     .then(function(response) { 
     return response.json()
@@ -52,14 +55,8 @@ function getWeather() {
     let latLon = "lat=" + lat + "&lon=" + lon;
     let cityState = data[0].name + " , " + data[0].state
     locationEl.textContent = cityState;
-    savedGeoData.push(latLon)
-    savedCityData.push(data[0].name)
-    let cityButton = document.createElement('button')
-    cityButton.textContent = data[0].name
-    cityButton.classList.add("search-button")
-    cityButton.setAttribute("data-city", data[0].name)
-    savedButtons.append(cityButton)
     console.log(latLon)
+    // fetch within fetch to use the lat and lon to grab the information we need
     let anotherUrl = "https://api.openweathermap.org/data/2.5/onecall?" + latLon + "&appid=0ca6859b636893d65ad340a16c3102a5"
     return fetch(anotherUrl)
     })
@@ -69,7 +66,7 @@ function getWeather() {
     .then(function(data) {
         console.log(data)
         let apiData = data.current
-        // depending on description give an icon
+        // depending on description give a weather icon
         if (apiData.weather[0].main === 'Clouds') {
             let weatherIcon = document.createElement('img')
             weatherIcon.setAttribute("src", "assets/images/weather-icons/cloudy.svg")
@@ -108,12 +105,15 @@ function getWeather() {
         } else {
             return 
         }
-        const currentTime = apiData.dt - data.timezone_offset
-        console.log(currentTime)
-        let currentDate = new Date(currentTime * 1000);
-        console.log(data.timezone)
-        let dateOnly = moment.tz(currentDate, data.timezone).format('MMMM Do YYYY, h:mm:ss a')
-        console.log(dateOnly)
+        // dt times 1000 then subtract the timezone offset to get
+        // the local time for that city
+        const currentTime = (apiData.dt * 1000) - data.timezone_offset
+        // console.log(currentTime)
+        let currentDate = new Date(currentTime);
+        // console.log(currentDate)
+        let dateOnly = moment.tz(currentDate, data.timezone).format('MMMM Do YYYY, h:mm a z')
+        // console.log(dateOnly)
+        // generate the elements for the daily weather
         let date = document.createElement('p');
         date.textContent = dateOnly;
         locationEl.append(date);
@@ -135,8 +135,7 @@ function getWeather() {
             uvIndex.classList.add('red')
         }
 
-        // create and append elements for the 5 day forecast
-        
+        // create the grey boxes for the 5 day forecast
         for (let i=0; i<5; i++) {
             let bottomContainer= document.querySelector('.bottom')
             let boxContainer = document.createElement('div')
@@ -145,13 +144,14 @@ function getWeather() {
             let logoTemp = bottomContainer.children[i]
             logoTemp.classList.add("box-container"+ (i+1));
         }
-
-
+        // for loop that allows us to grab the information starting from 
+        // the next day, skipping current day
         for (let j=1; j<6; j++) {
+            // grab container to append to, generate the date for the boxes
             let logoTemp = document.querySelector('.box-container' + j)
             let fiveDays = document.createElement('h5')
-            let fiveDayDate = data.daily[j].dt - data.timezone_offset
-            let fiveTime = new Date(fiveDayDate * 1000)
+            let fiveDayDate = (data.daily[j].dt * 1000) - data.timezone_offset
+            let fiveTime = new Date(fiveDayDate)
             let fiveDateOnly = moment.tz(fiveTime, data.timezone).format('M' + '/' + 'D')
             fiveDays.textContent = fiveDateOnly
             fiveDays.classList.add("five-day");
@@ -196,6 +196,7 @@ function getWeather() {
             } else {
                 return 
             }
+            // generates the information for the 5-day forecast
             let fiveDayTemp = document.createElement('h5');
             let dayTemp = data.daily[j].temp.day
             fiveDayTemp.textContent = Math.floor(convertToFah(dayTemp)) + "℉";
@@ -207,29 +208,84 @@ function getWeather() {
             fiveDayWind.textContent = "Wind Speed:" + data.daily[j].wind_speed + "mph"
             fiveDayWind.classList.add("five-wind")
             logoTemp.append(fiveDayTemp, fiveDayHumidity, fiveDayWind)
+            saveData();
         }
     })
 }
 
 getWeather();
 
+// saves the city names as data into the local storage
 function saveData() {
-    localStorage.setItem("latLon", JSON.stringify(savedGeoData))
-    localStorage.setItem("cityNames", JSON.stringify(savedCityData))
+    if (cityNames !== "") {
+        for (let i=0; i<cityNames.length; i++) {
+            localStorage.setItem("cityNames" + i, JSON.stringify(cityNames[i]))
+        }
+    }
 }
 
-// buttons have be less than 9 to fit within space
-function saveButtons(event) {
-    let retrievedGeoData = JSON.parse(localStorage.getItem("latLon"))
-    let retrievedCityData = JSON.parse(localStorage.getItem("cityNames"))
+// function that creates the button when user inputs a city 
+function createButtons() {
+    let cityButton = document.createElement('button')
+    // if user inputs something, save that to the empty array for city names
+    if (userInput) {
+        userInputValue = userInput.value;
+        cityNames.push(userInputValue)
+    }
+    // if the array is not empty then generate the buttons onto the page
+    if (cityNames !== "") {
+        for (let i=0; i<cityNames.length; i++) {
+            // change text to the city names for the button
+            cityButton.textContent = cityNames[i]
+            cityButton.setAttribute("data-city", cityNames[i])
+            // applies the css to these buttons by using class
+            cityButton.classList.add("saved-btn")
+            rightContainer.append(cityButton)
+        }
+    }
 }
 
+// function to retrieve info from local storage and generate buttons even 
+// when browser refreshes
+function retrieveButtons() {
+    for (let i=0; i<cityNames.length; i++) {
+        let cityName = localStorage.getItem("cityNames" + i)
+        console.log(cityName)
+        cityButton.textContent = cityName[i]
+        cityButton.classList.add("saved-btn")
+        rightContainer.append(cityButton)
+    }
+}
+
+// this function is not working right now....
+// retrieveButtons();
+
+// still trying to figure out adding event listener to the buttons to 
+// get weather data for the city on that button
+savedButtons.addEventListener("click", function(event) {
+    event.preventDefault();
+    let element = event.target;
+    var index = element.getAttribute("data-city");
+    if (element.matches("button") === true) {
+        userInputValue = index
+        console.log(index)
+        let removeContent = document.querySelector(".bottom")
+        removeContent.textContent = "";
+        logoTempEl.textContent = "";
+        element.parentElement.textContent = ""
+        getWeather();
+        createButtons();
+    }
+})
+
+// click the search button and the following functions will run
 searchButton.addEventListener("click", function(event) {
     event.preventDefault();
+    //clears out the already appended elements 
     let removeContent = document.querySelector(".bottom")
     removeContent.textContent = "";
     logoTempEl.textContent = "";
     getWeather();
-    saveData()
-    saveButtons();
+    createButtons();
+    console.log(cityNames)
 })
