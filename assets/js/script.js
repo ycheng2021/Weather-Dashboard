@@ -247,36 +247,36 @@ function createButtons() {
 
 // function to retrieve info from local storage and generate buttons even 
 // when browser refreshes
-function retrieveButtons() {
-    for (let i=0; i<cityNames.length; i++) {
-        let cityName = localStorage.getItem("cityNames" + i)
-        console.log(cityName)
-        cityButton.textContent = cityName[i]
-        cityButton.classList.add("saved-btn")
-        rightContainer.append(cityButton)
-    }
-}
+// function retrieveButtons() {
+//     for (let i=0; i<cityNames.length; i++) {
+//         let cityName = localStorage.getItem("cityNames" + i)
+//         console.log(cityName)
+//         cityButton.textContent = cityName[i]
+//         cityButton.classList.add("saved-btn")
+//         rightContainer.append(cityButton)
+//     }
+// }
 
 // this function is not working right now....
 // retrieveButtons();
 
 // still trying to figure out adding event listener to the buttons to 
 // get weather data for the city on that button
-savedButtons.addEventListener("click", function(event) {
-    event.preventDefault();
-    let element = event.target;
-    var index = element.getAttribute("data-city");
-    if (element.matches("button") === true) {
-        userInputValue = index
-        console.log(index)
-        let removeContent = document.querySelector(".bottom")
-        removeContent.textContent = "";
-        logoTempEl.textContent = "";
-        element.parentElement.textContent = ""
-        getWeather();
-        createButtons();
-    }
-})
+// savedButtons.addEventListener("click", function(event) {
+//     event.preventDefault();
+//     let element = event.target;
+//     var index = element.getAttribute("data-city");
+//     if (element.matches("button") === true) {
+//         userInputValue = index
+//         console.log(index)
+//         let removeContent = document.querySelector(".bottom")
+//         removeContent.textContent = "";
+//         logoTempEl.textContent = "";
+//         element.parentElement.textContent = ""
+//         getWeather();
+//         createButtons();
+//     }
+// })
 
 // click the search button and the following functions will run
 searchButton.addEventListener("click", function(event) {
