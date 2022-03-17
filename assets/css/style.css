@@ -153,10 +153,17 @@ h5 {
     margin-left: 10px;
 }
 
-.saved-button {
+.saved-btn {
+    width: 150px;
+    height: 40px;
+    background-color: rgb(156, 192, 209);
+    border: 1px solid black;
+    border-radius: 3px;
+    font-size: 20px;
     display: flex;
     flex-direction: column;
 }
+
 
 .container {
     width: 130px;
