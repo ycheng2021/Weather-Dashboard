@@ -19,7 +19,7 @@ function convertToFah(kelvin) {
 }
 
 // empty array to push the city names into
-const cityNames = [];
+let cityNames = [];
 
 // function to grab the lat and lon, then use lat and lon and generate
 // the weather information needed to create and append elements
@@ -29,6 +29,8 @@ function getWeather() {
     // turn user input as all lowercase to reduce errors 
     userInputValue = userInputValue.toLowerCase();
     
+    if (userInputValue) saveData(userInputValue);
+
     // if there is no input just use los angeles
     if (userInputValue === "") {
         userInputValue = "los%20angeles"
@@ -208,7 +210,7 @@ function getWeather() {
             fiveDayWind.textContent = "Wind Speed:" + data.daily[j].wind_speed + "mph"
             fiveDayWind.classList.add("five-wind")
             logoTemp.append(fiveDayTemp, fiveDayHumidity, fiveDayWind)
-            saveData();
+            // saveData();
         }
     })
 }
@@ -216,25 +218,35 @@ function getWeather() {
 getWeather();
 
 // saves the city names as data into the local storage
-function saveData() {
-    if (cityNames !== "") {
-        for (let i=0; i<cityNames.length; i++) {
-            localStorage.setItem("cityNames" + i, JSON.stringify(cityNames[i]))
-        }
+function saveData(recentCity) {
+    // retrieve city names
+    let savedCities = localStorage.getItem("cityNames")
+    if (!savedCities) {
+        cityNames = [];
+    } else {
+        cityNames = JSON.parse(savedCities);
     }
+
+    // if user inputs something, save that to the empty array for city names
+    cityNames.push(recentCity)
+    localStorage.setItem("cityNames", JSON.stringify(cityNames))
+    
 }
 
 // function that creates the button when user inputs a city 
 function createButtons() {
-    let cityButton = document.createElement('button')
-    // if user inputs something, save that to the empty array for city names
-    if (userInput) {
-        userInputValue = userInput.value;
-        cityNames.push(userInputValue)
+    let savedCities = localStorage.getItem("cityNames")
+    if (!savedCities) {
+        cityNames = [];
+    } else {
+        cityNames = JSON.parse(savedCities);
     }
+    console.log(cityNames)
     // if the array is not empty then generate the buttons onto the page
     if (cityNames !== "") {
+        savedButtons.textContent = "";
         for (let i=0; i<cityNames.length; i++) {
+            let cityButton = document.createElement('button')
             // change text to the city names for the button
             cityButton.textContent = cityNames[i]
             cityButton.setAttribute("data-city", cityNames[i])
@@ -245,38 +257,7 @@ function createButtons() {
     }
 }
 
-// function to retrieve info from local storage and generate buttons even 
-// when browser refreshes
-// function retrieveButtons() {
-//     for (let i=0; i<cityNames.length; i++) {
-//         let cityName = localStorage.getItem("cityNames" + i)
-//         console.log(cityName)
-//         cityButton.textContent = cityName[i]
-//         cityButton.classList.add("saved-btn")
-//         rightContainer.append(cityButton)
-//     }
-// }
-
-// this function is not working right now....
-// retrieveButtons();
-
-// still trying to figure out adding event listener to the buttons to 
-// get weather data for the city on that button
-// savedButtons.addEventListener("click", function(event) {
-//     event.preventDefault();
-//     let element = event.target;
-//     var index = element.getAttribute("data-city");
-//     if (element.matches("button") === true) {
-//         userInputValue = index
-//         console.log(index)
-//         let removeContent = document.querySelector(".bottom")
-//         removeContent.textContent = "";
-//         logoTempEl.textContent = "";
-//         element.parentElement.textContent = ""
-//         getWeather();
-//         createButtons();
-//     }
-// })
+createButtons();
 
 // click the search button and the following functions will run
 searchButton.addEventListener("click", function(event) {
