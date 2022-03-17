@@ -42,7 +42,7 @@ function getWeather() {
         return userInputValue
     } 
 
-    requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + userInputValue + "&appid=0ca6859b636893d65ad340a16c3102a5";
+    requestUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + userInputValue + "&appid=0ca6859b636893d65ad340a16c3102a5";
     
     // fetch the lat and lon data based on the city provided
     fetch(requestUrl)
