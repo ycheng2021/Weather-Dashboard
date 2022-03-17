@@ -170,7 +170,7 @@ function getWeather() {
                 smallIcon.setAttribute("src", "assets/images/weather-icons/clear.svg")
                 smallIcon.classList.add("side-icon")
                 logoTemp.append(smallIcon)   
-            } else if (data.daily[j].weather[0].main === 'Atmosphere') {
+            } else if (data.daily[j].weather[0].main === 'Mist' || 'Smoke' || 'Haze' || 'Dust' || 'Fog' || 'Sand' || 'Dust' || 'Ash' || 'Squall' || 'Tornado') {
                 let  smallIcon = document.createElement('img')
                 smallIcon.setAttribute("src", "assets/images/weather-icons/atmosphere.svg")
                 smallIcon.classList.add("side-icon")
